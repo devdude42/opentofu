@@ -4,13 +4,11 @@ This repository contains OpenTofu Core, which includes the command line interfac
 
 This document provides guidance on OpenTofu contribution recommended practices. It covers how to submit issues, how to get involved in the discussion, how to work on the code, and how to contribute code changes.
 
-The easiest way to contribute is by [opening an issue](https://github.com/opentffoundation/opentf/issues/new/choose)! Bug reports, broken compatibility reports, feature requests, old issue reposts, and well-prepared RFCs are all very welcome.
+The easiest way to contribute is by [opening an issue](https://github.com/opentofu/opentofu/issues/new/choose)! Bug reports, broken compatibility reports, feature requests, old issue reposts, and well-prepared RFCs are all very welcome.
 
 All major changes to OpenTofu Core go through the public RFC process, including those proposed by the core team. Thus, if you'd like to propose such a change, please prepare an RFC, so that the community can discuss the change and everybody has a chance to voice their opinion. You're also welcome to voice your own opinion on existing RFCs! You can find them by [going to the issues view and filtering by the rfc label](https://github.com/opentofu/opentofu/issues?q=is%3Aopen+is%3Aissue+label%3Arfc).
 
 Generally, we appreciate external contributions very much and would love to work with you on them. **However, please make sure to read the [Contributing a Code Change](#contributing-a-code-change) section prior to making a contribution.**
-
-**Important Note: Since we're still in the cleanup phase of making this repository ready for the first alpha release, we encourage you to wait with any code contributions until this first alpha release is out, to avoid conflicts.**
 
 ---
 
@@ -18,6 +16,7 @@ Generally, we appreciate external contributions very much and would love to work
 
 - [Contributing a Code Change](#contributing-a-code-change)
 - [Working on the Code](#working-on-the-code)
+- [Adding or updating dependencies](#adding-or-updating-dependencies)
 - [Acceptance Tests: Testing interactions with external services](#acceptance-tests-testing-interactions-with-external-services)
 - [Generated Code](#generated-code)
 
@@ -58,7 +57,7 @@ Switch into the root directory of the cloned repository and build OpenTofu using
 
 ```
 cd opentofu
-go install .
+go install ./cmd/tofu
 ```
 
 The first time you run the `go install` command, the Go toolchain will download any library dependencies that you don't already have in your Go modules cache. Subsequent builds will be faster because these dependencies will already be available on your local disk.
@@ -81,6 +80,8 @@ As you make your changes, you can re-run the above command to ensure that the te
 go test ./internal/command/...
 go test ./internal/addrs
 ```
+
+For debugging the code, please refer to the [DEBUGGING.md](./DEBUGGING.md) file.
 
 ## Adding or updating dependencies
 
@@ -110,6 +111,24 @@ TF_ACC=1 go test ./internal/initwd
 ```
 
 Because the acceptance tests depend on services outside of the OpenTofu codebase, and because the acceptance tests are usually used only when making changes to the systems they cover, it is common and expected that drift in those external systems will cause test failures. Because of this, prior to working on a system covered by acceptance tests it's important to run the existing tests for that system in an *unchanged* work tree first and respond to any test failures that preexist, to avoid misinterpreting such failures as bugs in your new changes.
+
+### Integration Tests: Testing interactions with external backends
+
+OpenTofu supports various [backends](https://opentofu.org/docs/language/settings/backends/configuration). We run integration test against them to ensure no side effects when using OpenTofu.
+
+Execute to list all available commands to run tests:
+
+```commandline
+make list-integration-tests
+```
+
+From the list of output commands, you can execute those which involve backends you intend to test against.
+
+For example, execute the command to run integration tests with s3 backend:
+
+```commandline
+make test-s3
+```
 
 ## Generated Code
 

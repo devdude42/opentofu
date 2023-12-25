@@ -3,8 +3,10 @@
 
 FROM alpine:3.18
 
-LABEL maintainer="OpenTF Team <opentf@opentf.org>"
+LABEL maintainer="OpenTofu Core Team <core@opentofu.org>"
 
-COPY opentf /usr/local/bin/opentf
+RUN apk add --no-cache git bash openssh
 
-ENTRYPOINT ["/usr/local/bin/opentf"]
+COPY tofu /usr/local/bin/tofu
+
+ENTRYPOINT ["/usr/local/bin/tofu"]
