@@ -518,6 +518,10 @@
             "path": "language/functions/csvdecode"
           },
           {
+            "title": "<code>gunzipbase64</code>",
+            "path": "language/functions/gunzipbase64"
+          },
+          {
             "title": "<code>jsondecode</code>",
             "path": "language/functions/jsondecode"
           },
@@ -925,6 +929,11 @@
       {
         "title": "formatlist",
         "path": "language/functions/formatlist",
+        "hidden": true
+      },
+      {
+        "title": "gunzipbase64",
+        "path": "language/functions/gunzipbase64",
         "hidden": true
       },
       {
